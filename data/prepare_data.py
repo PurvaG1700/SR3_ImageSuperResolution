@@ -173,7 +173,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    resample_map = {'bilinear': Image.BILINEAR, 'bicubic': Image.BICUBIC, 'lazcos': Image.LANCZOS}
+    resample_map = {'bilinear': Image.BILINEAR, 'bicubic': Image.BICUBIC}
     resample = resample_map[args.resample]
     sizes = [int(s.strip()) for s in args.size.split(',')]
 

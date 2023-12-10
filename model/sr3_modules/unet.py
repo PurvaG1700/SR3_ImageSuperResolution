@@ -58,7 +58,7 @@ class Swish(nn.Module):
 class Upsample(nn.Module):
     def __init__(self, dim):
         super().__init__()
-        self.up = nn.Upsample(scale_factor=2, mode="bicubic")
+        self.up = nn.Upsample(scale_factor=2, mode="nearest")
         self.conv = nn.Conv2d(dim, dim, 3, padding=1)
 
     def forward(self, x):

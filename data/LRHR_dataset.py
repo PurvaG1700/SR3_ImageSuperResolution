@@ -4,6 +4,7 @@ from PIL import Image
 from torch.utils.data import Dataset
 import random
 import data.util as Util
+import torch
 
 
 class LRHRDataset(Dataset):
@@ -92,8 +93,57 @@ class LRHRDataset(Dataset):
         if self.need_LR:
             [img_LR, img_SR, img_HR] = Util.transform_augment(
                 [img_LR, img_SR, img_HR], split=self.split, min_max=(-1, 1))
+            
+            #Split image
+            sr_i = []
+            hr_i = []
+            hw = int(img_SR.shape[2]/2)
+
+            sr_i.append(img_SR[:, 0:hw, 0:hw])
+            sr_i.append(img_SR[:, 0:hw, hw:])
+            sr_i.append(img_SR[:, hw:, 0:hw])
+            sr_i.append(img_SR[:, hw:, hw:])
+
+            hr_i.append(img_HR[:, 0:hw, 0:hw])
+            hr_i.append(img_HR[:, 0:hw, hw:])
+            hr_i.append(img_HR[:, hw:, 0:hw])
+            hr_i.append(img_HR[:, hw:, hw:])
+
+            lr_i = []
+            hw = int(img_LR.shape[2]/2)
+
+            lr_i.append(img_LR[:, 0:hw, 0:hw])
+            lr_i.append(img_LR[:, 0:hw, hw:])
+            lr_i.append(img_LR[:, hw:, 0:hw])
+            lr_i.append(img_LR[:, hw:, hw:])
+
+            img_SR = torch.stack(sr_i, 0)
+            img_HR = torch.stack(hr_i, 0)
+            img_LR = torch.stack(lr_i, 0)
+            #End Split image
+            
             return {'LR': img_LR, 'HR': img_HR, 'SR': img_SR, 'Index': index}
         else:
             [img_SR, img_HR] = Util.transform_augment(
                 [img_SR, img_HR], split=self.split, min_max=(-1, 1))
+            
+            #Split Image
+            sr_i = []
+            hr_i = []
+            hw = int(img_SR.shape[2]/2)
+
+            sr_i.append(img_SR[:, 0:hw, 0:hw])
+            sr_i.append(img_SR[:, 0:hw, hw:])
+            sr_i.append(img_SR[:, hw:, 0:hw])
+            sr_i.append(img_SR[:, hw:, hw:])
+
+            hr_i.append(img_HR[:, 0:hw, 0:hw])
+            hr_i.append(img_HR[:, 0:hw, hw:])
+            hr_i.append(img_HR[:, hw:, 0:hw])
+            hr_i.append(img_HR[:, hw:, hw:])
+
+            img_SR = torch.stack(sr_i, 0)
+            img_HR = torch.stack(hr_i, 0)
+            #End Split Image
+
             return {'HR': img_HR, 'SR': img_SR, 'Index': index}

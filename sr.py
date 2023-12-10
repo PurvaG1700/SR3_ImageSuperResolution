@@ -114,6 +114,41 @@ if __name__ == "__main__":
                         diffusion.feed_data(val_data)
                         diffusion.test(continous=False)
                         visuals = diffusion.get_current_visuals()
+
+                        ##Combine Split Images
+                        sr_n = int(visuals['SR'].shape[0]/4)
+                        sr_i = torch.zeros((sr_n, 3, 128, 128))
+                        hr_i = torch.zeros((1, 3, 128, 128))
+                        lr_i = torch.zeros((1, 3, 16, 16))
+                        f_i = torch.zeros((1, 3, 128, 128))
+
+                        hr_i[:, :, 0:64, 0:64] = visuals['HR'][0]
+                        hr_i[:, :, 0:64, 64:] = visuals['HR'][1]
+                        hr_i[:, :, 64:, 0:64] = visuals['HR'][2]
+                        hr_i[:, :, 64:, 64:] = visuals['HR'][3]
+
+                        lr_i[:, :, 0:8, 0:8] = visuals['LR'][0]
+                        lr_i[:, :, 0:8, 8:] = visuals['LR'][1]
+                        lr_i[:, :, 8:, 0:8] = visuals['LR'][2]
+                        lr_i[:, :, 8:, 8:] = visuals['LR'][3]
+
+                        f_i[:, :, 0:64, 0:64] = visuals['INF'][0]
+                        f_i[:, :, 0:64, 64:] = visuals['INF'][1]
+                        f_i[:, :, 64:, 0:64] = visuals['INF'][2]
+                        f_i[:, :, 64:, 64:] = visuals['INF'][3]
+
+                        for sr_k in range(sr_n):
+                            sr_i[sr_k, :, 0:64, 0:64] = visuals['SR'][sr_k*4]
+                            sr_i[sr_k, :, 0:64, 64:] = visuals['SR'][sr_k*4+1]
+                            sr_i[sr_k, :, 64:, 0:64] = visuals['SR'][sr_k*4+2]
+                            sr_i[sr_k, :, 64:, 64:] = visuals['SR'][sr_k*4+3]
+
+                        visuals['HR'] = hr_i
+                        visuals['LR'] = lr_i
+                        visuals['INF'] = f_i
+                        visuals['SR'] = sr_i
+                        ##End Combine Split Images
+
                         sr_img = Metrics.tensor2img(visuals['SR'])  # uint8
                         hr_img = Metrics.tensor2img(visuals['HR'])  # uint8
                         lr_img = Metrics.tensor2img(visuals['LR'])  # uint8
@@ -184,6 +219,41 @@ if __name__ == "__main__":
             diffusion.feed_data(val_data)
             diffusion.test(continous=True)
             visuals = diffusion.get_current_visuals()
+
+            ##Combine split images
+            sr_n = int(visuals['SR'].shape[0]/4)
+
+            sr_i = torch.zeros((sr_n, 3, 128, 128))
+            hr_i = torch.zeros((1, 3, 128, 128))
+            lr_i = torch.zeros((1, 3, 16, 16))
+            f_i = torch.zeros((1, 3, 128, 128))
+
+            hr_i[:, :, 0:64, 0:64] = visuals['HR'][0]
+            hr_i[:, :, 0:64, 64:] = visuals['HR'][1]
+            hr_i[:, :, 64:, 0:64] = visuals['HR'][2]
+            hr_i[:, :, 64:, 64:] = visuals['HR'][3]
+
+            lr_i[:, :, 0:8, 0:8] = visuals['LR'][0]
+            lr_i[:, :, 0:8, 8:] = visuals['LR'][1]
+            lr_i[:, :, 8:, 0:8] = visuals['LR'][2]
+            lr_i[:, :, 8:, 8:] = visuals['LR'][3]
+
+            f_i[:, :, 0:64, 0:64] = visuals['INF'][0]
+            f_i[:, :, 0:64, 64:] = visuals['INF'][1]
+            f_i[:, :, 64:, 0:64] = visuals['INF'][2]
+            f_i[:, :, 64:, 64:] = visuals['INF'][3]
+
+            for sr_k in range(sr_n):
+                sr_i[sr_k, :, 0:64, 0:64] = visuals['SR'][sr_k*4]
+                sr_i[sr_k, :, 0:64, 64:] = visuals['SR'][sr_k*4+1]
+                sr_i[sr_k, :, 64:, 0:64] = visuals['SR'][sr_k*4+2]
+                sr_i[sr_k, :, 64:, 64:] = visuals['SR'][sr_k*4+3]
+
+            visuals['HR'] = hr_i
+            visuals['LR'] = lr_i
+            visuals['INF'] = f_i
+            visuals['SR'] = sr_i
+            ##End Combine Split images
 
             hr_img = Metrics.tensor2img(visuals['HR'])  # uint8
             lr_img = Metrics.tensor2img(visuals['LR'])  # uint8

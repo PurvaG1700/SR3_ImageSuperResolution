@@ -241,8 +241,29 @@ class GaussianDiffusion(nn.Module):
         else:
             x_recon = self.denoise_fn(
                 torch.cat([x_in['SR'], x_noisy], dim=1), continuous_sqrt_alpha_cumprod)
+            
 
-        loss = self.loss_func(noise, x_recon)
+
+        #Edge Consistency
+        x_target = x_noisy-x_recon
+
+        n_img = int(b/4)
+        for i in range(n_img):
+            mask = torch.zeros((3,64,64)).to(x_noisy.device)
+            mask[:,:, 62:] = 1 #mask to get last two columns (right edge)
+            q1q2 = F.mse_loss(mask*x_target[i*4], mask*torch.flip(x_target[i*4+1], [2]), reduction='sum')
+
+            q3q4 = F.mse_loss(mask*x_target[i*4+2], mask*torch.flip(x_target[i*4+3], [2]), reduction='sum')
+
+            mask = torch.rot90(mask, 3, [1,2])
+
+            q1q3 = F.mse_loss(mask*x_target[i*4], mask*torch.flip(x_target[i*4+2], [1]), reduction='sum')
+            q2q4 = F.mse_loss(mask*x_target[i*4+1], mask*torch.flip(x_target[i*4+3], [1]), reduction='sum')
+                         
+            edge_consistency_loss = 0.25*q1q2 + 0.25*q3q4 + 0.25*q1q3 + 0.25*q2q4
+        #End Edge Consistency
+
+        loss = self.loss_func(noise, x_recon) + edge_consistency_loss
         return loss
 
     def forward(self, x, *args, **kwargs):

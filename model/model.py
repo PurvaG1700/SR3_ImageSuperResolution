@@ -43,6 +43,14 @@ class DDPM(BaseModel):
         self.print_network()
 
     def feed_data(self, data):
+        #Flatten the batch dim with the quadrant dim
+        data['HR'] = torch.flatten(data['HR'], start_dim=0, end_dim=1)
+        data['SR'] = torch.flatten(data['SR'], start_dim=0, end_dim=1)
+        
+        if 'LR' in data.keys():
+            data['LR'] = torch.flatten(data['LR'], start_dim=0, end_dim=1)
+        #End flatten
+
         self.data = self.set_device(data)
 
     def optimize_parameters(self):
