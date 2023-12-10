@@ -165,15 +165,15 @@ if __name__ == '__main__':
     parser.add_argument('--out', '-o', type=str,
                         default='./dataset/celebahq')
 
-    parser.add_argument('--size', type=str, default='64,512')
+    parser.add_argument('--size', type=str, default='16,128')
     parser.add_argument('--n_worker', type=int, default=3)
-    parser.add_argument('--resample', type=str, default='bicubic')
+    parser.add_argument('--resample', type=str, default='lazcos')
     # default save in png format
     parser.add_argument('--lmdb', '-l', action='store_true')
 
     args = parser.parse_args()
 
-    resample_map = {'bilinear': Image.BILINEAR, 'bicubic': Image.BICUBIC}
+    resample_map = {'bilinear': Image.BILINEAR, 'bicubic': Image.BICUBIC, 'lazcos': Image.LANCZOS}
     resample = resample_map[args.resample]
     sizes = [int(s.strip()) for s in args.size.split(',')]
 
