@@ -4,16 +4,9 @@
 
 ## Brief
 
+Code Submission for UCLA CS245: Big Data Analytics course offered in Fall 2023
+
 This is an unofficial implementation of **Image Super-Resolution via Iterative Refinement(SR3)** by **PyTorch**.
-
-There are some implementation details that may vary from the paper's description, which may be different from the actual `SR3` structure due to details missing. Specifically, we:
-
-- Used the ResNet block and channel concatenation style like vanilla `DDPM`.
-- Used the attention mechanism in low-resolution features ( $16 \times 16$ ) like vanilla `DDPM`.
-- Encode the $\gamma$ as `FilM` structure did in `WaveGrad`, and embed it without affine transformation.
-- Define the posterior variance as $\dfrac{1-\gamma_{t-1}}{1-\gamma_{t}} \beta_t$  rather than $\beta_t$,  which gives similar results to the vanilla paper.
-
-**If you just want to upscale $(64 \times 64)\text{px} \rightarrow (512 \times 512)\text{px}$ images using the pre-trained model, check out [this google colab script](https://colab.research.google.com/drive/1G1txPI1GKueKH0cSi_DgQFKwfyJOXlhY?usp=sharing).**
 
 ## Status
 
@@ -38,11 +31,9 @@ There are some implementation details that may vary from the paper's description
 - [x] validate alone script
 - [x] [Weights and Biases Logging](https://github.com/Janspiry/Image-Super-Resolution-via-Iterative-Refinement/pull/44) 🌟 NEW
 
-
-
 ## Results
 
-*Note:*  We set the maximum reverse steps budget to $2000$. We limited the model parameters in `Nvidia 1080Ti`, **image noise** and **hue deviation** occasionally appear in high-resolution images, resulting in low scores.  There is a lot of room for optimization.  **We are welcome to any contributions for more extensive experiments and code enhancements.**
+*Note:*  We set the maximum reverse steps budget to $2000$. We limited the model parameters in **image noise** and **hue deviation** occasionally appear in high-resolution images, resulting in low scores.  There is a lot of room for optimization. 
 
 | Tasks/Metrics        | SSIM(+) | PSNR(+) | FID(-)  | IS(+)   |
 | -------------------- | ----------- | -------- | ---- | ---- |
@@ -182,26 +173,6 @@ Set the  image path like steps in `Own Data`, then run the script:
 # run the script
 python infer.py -c [config file]
 ```
-
-## Weights and Biases 🎉
-
-The library now supports experiment tracking, model checkpointing and model prediction visualization with [Weights and Biases](https://wandb.ai/site). You will need to [install W&B](https://pypi.org/project/wandb/) and login by using your [access token](https://wandb.ai/authorize). 
-
-```
-pip install wandb
-
-# get your access token from wandb.ai/authorize
-wandb login
-```
-
-W&B logging functionality is added to the `sr.py`, `sample.py` and `infer.py` files. You can pass `-enable_wandb` to start logging.
-
-- `-log_wandb_ckpt`: Pass this argument along with `-enable_wandb` to save model checkpoints as [W&B Artifacts](https://docs.wandb.ai/guides/artifacts). Both `sr.py` and `sample.py` is enabled with model checkpointing. 
-- `-log_eval`: Pass this argument along with `-enable_wandb` to save the evaluation result as interactive [W&B Tables](https://docs.wandb.ai/guides/data-vis). Note that only `sr.py` is enabled with this feature. If you run `sample.py` in eval mode, the generated images will automatically be logged as image media panel. 
-- `-log_infer`: While running `infer.py` pass this argument along with `-enable_wandb` to log the inference results as interactive W&B Tables. 
-
-You can find more on using these features [here](https://github.com/Janspiry/Image-Super-Resolution-via-Iterative-Refinement/pull/44). 🚀
-
 
 ## Acknowledgements
 
