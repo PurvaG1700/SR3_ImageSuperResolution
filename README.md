@@ -1,4 +1,4 @@
-# Image Super-Resolution via Iterative Refinement
+# Image Super-Resolution via Iterative Refinement for Split Image Experiment
 
 [Paper](https://arxiv.org/pdf/2104.07636.pdf ) |  [Project](https://iterative-refinement.github.io/ )
 
