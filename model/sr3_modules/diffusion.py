@@ -46,6 +46,24 @@ def make_beta_schedule(schedule, n_timestep, linear_start=1e-4, linear_end=2e-2,
         betas = betas.clamp(max=0.999)
     else:
         raise NotImplementedError(schedule)
+        
+    alphas = 1 - betas
+    alphas_bar = alphas.cumprod(0)
+    alphas_bar_sqrt = np.sqrt(alphas_bar)
+
+    # Store old values.
+    alphas_bar_sqrt_0 = alphas_bar_sqrt[0].copy()
+    alphas_bar_sqrt_T = alphas_bar_sqrt[-1].copy()
+     # Shift so last timestep is zero.
+    alphas_bar_sqrt -= alphas_bar_sqrt_T
+     # Scale so first timestep is back to old value.
+    alphas_bar_sqrt *= alphas_bar_sqrt_0 / (alphas_bar_sqrt_0 - alphas_bar_sqrt_T)
+
+     # Convert alphas_bar_sqrt to betas
+    alphas_bar = alphas_bar_sqrt ** 2
+    alphas = alphas_bar[1:] / alphas_bar[:-1]
+    alphas = torch.cat([alphas_bar[0:1], alphas])
+    betas = 1 - alphas
     return betas
 
 
