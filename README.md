@@ -1,4 +1,4 @@
-# Image Super-Resolution via Iterative Refinement
+# Image Super-Resolution via Iterative Refinement Lazcos Experiment
 
 [Paper](https://arxiv.org/pdf/2104.07636.pdf ) |  [Project](https://iterative-refinement.github.io/ )
 
@@ -6,58 +6,7 @@
 
 Code Submission for UCLA CS245: Big Data Analytics course offered in Fall 2023
 
-This is an unofficial implementation of **Image Super-Resolution via Iterative Refinement(SR3)** by **PyTorch**.
-
-## Status
-
-**★★★ NEW: The follow-up [Palette-Image-to-Image-Diffusion-Models](https://arxiv.org/abs/2111.05826) is now available; See the details [here](https://github.com/Janspiry/Palette-Image-to-Image-Diffusion-Models) ★★★**
-
-### Conditional Generation (with Super Resolution)
-
-- [x] 16×16 -> 128×128 on FFHQ-CelebaHQ
-- [x] 64×64 -> 512×512 on FFHQ-CelebaHQ
-
-### Unconditional Generation
-
-- [x] 128×128 face generation on FFHQ
-- [ ] ~~1024×1024 face generation by a cascade of 3 models~~
-
-### Training Step
-
-- [x] log / logger
-- [x] metrics evaluation
-- [x] multi-gpu support
-- [x] resume training / pretrained model
-- [x] validate alone script
-- [x] [Weights and Biases Logging](https://github.com/Janspiry/Image-Super-Resolution-via-Iterative-Refinement/pull/44) 🌟 NEW
-
-## Results
-
-*Note:*  We set the maximum reverse steps budget to $2000$. We limited the model parameters in **image noise** and **hue deviation** occasionally appear in high-resolution images, resulting in low scores.  There is a lot of room for optimization. 
-
-| Tasks/Metrics        | SSIM(+) | PSNR(+) | FID(-)  | IS(+)   |
-| -------------------- | ----------- | -------- | ---- | ---- |
-| 16×16 -> 128×128 | 0.675       | 23.26    | - | - |
-| 64×64 -> 512×512     | 0.445 | 19.87 | - | - |
-| 128×128 | - | - | | |
-| 1024×1024 | - | - |      |      |
-
-- #### 16×16 -> 128×128 on FFHQ-CelebaHQ [[More Results](https://drive.google.com/drive/folders/1Vk1lpHzbDf03nME5fV9a-lWzSh3kMK14?usp=sharing)]
-
-| <img src="./misc/sr_process_16_128_0.png" alt="show" style="zoom:90%;" /> |  <img src="./misc/sr_process_16_128_1.png" alt="show" style="zoom:90%;" />    |   <img src="./misc/sr_process_16_128_2.png" alt="show" style="zoom:90%;" />   |
-| ------------------------------------------------------------ | ---- | ---- |
-
-- #### 64×64 -> 512×512 on FFHQ-CelebaHQ [[More Results](https://drive.google.com/drive/folders/1yp_4xChPSZUeVIgxbZM-e3ZSsSgnaR9Z?usp=sharing)]
-
-| <img src="./misc/sr_64_512_0_inf.png" alt="show" style="zoom:90%;" /> | <img src="./misc/sr_64_512_0_sr.png" alt="show" style="zoom:90%;" /> | <img src="./misc/sr_64_512_0_hr.png" alt="show" style="zoom:90%;" /> |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| <img src="./misc/sr_64_512_1_sr.png" alt="show" style="zoom:90%;" /> | <img src="./misc/sr_64_512_2_sr.png" alt="show" style="zoom:90%;" /> | <img src="./misc/sr_64_512_3_sr.png" alt="show" style="zoom:90%;" /> |
-
-- #### 128×128 face generation on FFHQ [[More Results](https://drive.google.com/drive/folders/13AsjRwDw4wMmL0bK7wPd2rP7ds7eyAMh?usp=sharing)]
-
-| <img src="./misc/sample_process_128_0.png" alt="show" style="zoom:90%;" /> |  <img src="./misc/sample_process_128_1.png" alt="show" style="zoom:90%;" />    |   <img src="./misc/sample_process_128_2.png" alt="show" style="zoom:90%;" />   |
-| ------------------------------------------------------------ | ---- | ---- |
-
+This is an unofficial implementation of **Image Super-Resolution via Iterative Refinement(SR3)** by **PyTorch** and based on the git repository https://github.com/Janspiry/Image-Super-Resolution-via-Iterative-Refinement. The following are instructions on how to setup this repository for the Lazcos Experiment.
 
 
 ## Usage
@@ -68,18 +17,19 @@ pip install -r requirement.txt
 
 ### Pretrained Model
 
-This paper is based on "Denoising Diffusion Probabilistic Models", and we build both DDPM/SR3 network structures, which use timesteps/gamma as model embedding inputs, respectively. In our experiments, the SR3 model can achieve better visual results with the same reverse steps and learning rate. You can select the JSON files with annotated suffix names to train the different models.
+The following is the weights for the pretrained model for the super-resoltion task 16x16 -> 128x128 that was trained on the FFHQ dataset.
 
 | Tasks                             | Platform（Code：qwer)                                        | 
 | --------------------------------- | ------------------------------------------------------------ |
 | 16×16 -> 128×128 on FFHQ-CelebaHQ | [Google Drive](https://drive.google.com/drive/folders/12jh0K8XoM1FqpeByXvugHHAF3oAZ8KRu?usp=sharing)\|[Baidu Yun](https://pan.baidu.com/s/1OzsGZA2Vmq1ZL_VydTbVTQ) |  
-| 64×64 -> 512×512 on FFHQ-CelebaHQ | [Google Drive](https://drive.google.com/drive/folders/1mCiWhFqHyjt5zE4IdA41fjFwCYdqDzSF?usp=sharing)\|[Baidu Yun](https://pan.baidu.com/s/1orzFmVDxMmlXQa2Ty9zY3g) |   
-| 128×128 face generation on FFHQ   | [Google Drive](https://drive.google.com/drive/folders/1ldukMgLKAxE7qiKdFJlu-qubGlnW-982?usp=sharing)\|[Baidu Yun](https://pan.baidu.com/s/1Vsd08P1A-48OGmnRV0E7Fg ) | 
+ 
 
 ```python
 # Download the pretrained model and edit [sr|sample]_[ddpm|sr3]_[resolution option].json about "resume_state":
 "resume_state": [your pretrained model's path]
 ```
+
+Then we can start training from the pretrained weights.
 
 ### Data Prepare
 
@@ -87,28 +37,28 @@ This paper is based on "Denoising Diffusion Probabilistic Models", and we build 
 
 If you didn't have the data, you can prepare it by following steps:
 
-- [FFHQ 128×128](https://github.com/NVlabs/ffhq-dataset) | [FFHQ 512×512](https://www.kaggle.com/arnaud58/flickrfaceshq-dataset-ffhq)
-- [CelebaHQ 256×256](https://www.kaggle.com/badasstechie/celebahq-resized-256x256) | [CelebaMask-HQ 1024×1024](https://drive.google.com/file/d/1badu11NqxGf6qM3PTTooQDJvQbejgbTv/view)
+- [FFHQ 128×128](https://github.com/NVlabs/ffhq-dataset)
+- [CelebaHQ 256×256](https://www.kaggle.com/badasstechie/celebahq-resized-256x256)
 
 Download the dataset and prepare it in **LMDB** or **PNG** format using script.
 
 ```python
 # Resize to get 16×16 LR_IMGS and 128×128 HR_IMGS, then prepare 128×128 Fake SR_IMGS by bicubic interpolation
-python data/prepare_data.py  --path [dataset root]  --out [output root] --size 16,128 -l
+python data/prepare_data.py  --path [dataset root]  --out [output root] --size 16,128
 ```
-
+data/prepare_data.py is set to use the lazcos resampling method by default. Therefore, no need to add the option.
 then you need to change the datasets config to your data path and image resolution: 
 
 ```json
 "datasets": {
     "train": {
-        "dataroot": "dataset/ffhq_16_128", // [output root] in prepare.py script
+        "dataroot": "dataset/ffhq_lazcos_16_128", // [output root] in prepare.py script
         "l_resolution": 16, // low resolution need to super_resolution
         "r_resolution": 128, // high resolution
-        "datatype": "lmdb", //lmdb or img, path of img files
+        "datatype": "img", //lmdb or img, path of img files
     },
     "val": {
-        "dataroot": "dataset/celebahq_16_128", // [output root] in prepare.py script
+        "dataroot": "dataset/celebahq_lazcos_16_128", // [output root] in prepare.py script
     }
 },
 ```
@@ -129,7 +79,7 @@ dataset/celebahq_16_128/
 
 ```python
 # super resolution from 16 to 128
-python data/prepare_data.py  --path [dataset root]  --out celebahq --size 16,128 -l
+python data/prepare_data.py  --path [dataset root]  --out celebahq --size 16,128
 ```
 
 *Note: Above script can be used whether you have the vanilla high-resolution images or not.*
@@ -139,7 +89,7 @@ then you need to change the dataset config to your data path and image resolutio
 ```json
 "datasets": {
     "train|val": { // train and validation part
-        "dataroot": "dataset/celebahq_16_128",
+        "dataroot": "dataset/celebahq_lazcos_16_128",
         "l_resolution": 16, // low resolution need to super_resolution
         "r_resolution": 128, // high resolution
         "datatype": "img", //lmdb or img, path of img files
@@ -152,16 +102,16 @@ then you need to change the dataset config to your data path and image resolutio
 ```python
 # Use sr.py and sample.py to train the super resolution task and unconditional generation task, respectively.
 # Edit json files to adjust network structure and hyperparameters
-python sr.py -p train -c config/sr_sr3.json
+python sr.py -p train -c config/lazcos.json
 ```
 
 ### Test/Evaluation
 
 ```python
 # Edit json to add pretrain model path and run the evaluation 
-python sr.py -p val -c config/sr_sr3.json
+python sr.py -p val -c config/lazcos.json
 
-# Quantitative evaluation alone using SSIM/PSNR metrics on given result root
+# Quantitative evaluation alone using SSIM/PSNR/Consistency metrics on given result root
 python eval.py -p [result root]
 ```
 
@@ -190,3 +140,4 @@ Furthermore, we are benefitting a lot from the following projects:
 - https://github.com/rosinality/denoising-diffusion-pytorch
 - https://github.com/lucidrains/denoising-diffusion-pytorch
 - https://github.com/hejingwenhejingwen/AdaFM
+- https://github.com/Janspiry/Image-Super-Resolution-via-Iterative-Refinement
