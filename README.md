@@ -6,7 +6,7 @@
 
 Code Submission for UCLA CS245: Big Data Analytics course offered in Fall 2023
 
-This is an unofficial implementation of **Image Super-Resolution via Iterative Refinement(SR3)** by **PyTorch** and based on the git repository https://github.com/Janspiry/Image-Super-Resolution-via-Iterative-Refinement. The following are instructions on how to setup this repository for the Split Image Experiment.
+This is an unofficial implementation of **Image Super-Resolution via Iterative Refinement(SR3)** by **PyTorch** and based on the git repository https://github.com/Janspiry/Image-Super-Resolution-via-Iterative-Refinement. The following are instructions on how to setup this repository for the Split Image Experiment. The code in this branch is only set up to perform 16x16 --> 128x128 super-resolution, spliting the image into 4 quadrants. Splitting the image into more parts would require changes to the edge consistency term in the loss function in model/sr3_modules/diffusion.py
 
 
 ## Usage
