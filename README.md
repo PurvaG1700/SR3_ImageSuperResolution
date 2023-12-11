@@ -8,6 +8,8 @@ Code Submission for UCLA CS245: Big Data Analytics course offered in Fall 2023
 
 This is an unofficial implementation of **Image Super-Resolution via Iterative Refinement(SR3)** by **PyTorch**.
 
+**The other branches contain updated code for each specific experiments (zero_snr, splitImage, lazcos, bilinear_unet, and area-icubic-upsampling-unet). This master branch only contains the unedited version of tge unofficial code for the SR3 Paper (https://github.com/Janspiry/Image-Super-Resolution-via-Iterative-Refinement)**
+
 ## Status
 
 **★★★ NEW: The follow-up [Palette-Image-to-Image-Diffusion-Models](https://arxiv.org/abs/2111.05826) is now available; See the details [here](https://github.com/Janspiry/Palette-Image-to-Image-Diffusion-Models) ★★★**
